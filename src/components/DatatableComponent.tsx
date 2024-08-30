@@ -1,11 +1,12 @@
 
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputSwitch } from 'primereact/inputswitch';
 import useSWR from "swr";
 import { Paginator } from 'primereact/paginator';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 
 interface onPageEventInterface {
@@ -49,17 +50,25 @@ export const DataTableComponent = () => {
                     <InputSwitch inputId="input-rowclick" checked={rowClick} onChange={(e) => setRowClick(e.value)} />
                     <label htmlFor="input-rowclick">Row Click</label>
                 </div>
-                <DataTable rows={5} value={products} selectionMode={rowClick ? null : 'checkbox'} selection={selectedProducts} onSelectionChange={(e:any) => setSelectedProducts(e.value)} dataKey="id" tableStyle={{ minWidth: '50rem' }}>
-                {/* <DataTable paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} value={products} selectionMode={rowClick ? null : 'checkbox'} selection={selectedProducts} onSelectionChange={(e:any) => setSelectedProducts(e.value)} dataKey="id" tableStyle={{ minWidth: '50rem' }}> */}
-                {/* <DataTable value={products} selectionMode={rowClick ? null : 'checkbox'} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)} dataKey="id" tableStyle={{ minWidth: '50rem' }}> */}
-                    <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
-                    <Column field="title" header="Title"></Column>
-                    <Column field="place_of_origin" header="Place of Origin"></Column>
-                    <Column field="artist_display" header="Artist Display"></Column>
-                    <Column field="inscriptions" header="Inscriptions"></Column>
-                    <Column field="date_start" header="Date Start"></Column>
-                    <Column field="date_end" header="Date End"></Column>
-                </DataTable>
+                 
+                {
+                isLoading
+                    ?
+                    <ProgressSpinner aria-label="Loading" />
+                    :
+                    <DataTable rows={5} value={products} selectionMode={rowClick ? null : 'checkbox'} selection={selectedProducts} onSelectionChange={(e:any) => setSelectedProducts(e.value)} dataKey="id" tableStyle={{ minWidth: '50rem' }}>
+                    {/* <DataTable paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} value={products} selectionMode={rowClick ? null : 'checkbox'} selection={selectedProducts} onSelectionChange={(e:any) => setSelectedProducts(e.value)} dataKey="id" tableStyle={{ minWidth: '50rem' }}> */}
+                    {/* <DataTable value={products} selectionMode={rowClick ? null : 'checkbox'} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)} dataKey="id" tableStyle={{ minWidth: '50rem' }}> */}
+                    
+                        <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
+                        <Column field="title" header="Title"></Column>
+                        <Column field="place_of_origin" header="Place of Origin"></Column>
+                        <Column field="artist_display" header="Artist Display"></Column>
+                        <Column field="inscriptions" header="Inscriptions"></Column>
+                        <Column field="date_start" header="Date Start"></Column>
+                        <Column field="date_end" header="Date End"></Column>
+                    </DataTable>
+                }
                 <Paginator first={first} rows={rows} totalRecords={10506} rowsPerPageOptions={[10, 20, 30]} onPageChange={onPageChange} />
             </div>
         </>
